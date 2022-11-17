@@ -11,6 +11,7 @@
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{bm}
 \usepackage{siunitx}
+\usepackage{physics}
 
 \makeatletter
 \def\fgcaption{\def\@captype{figure}\caption}
@@ -41,5 +42,239 @@
 \author{61908697 佐々木良輔}
 \date{}
 \maketitle
+電場中での電荷$e$の荷電粒子のハミルトニアン$\mathcal{H}$はポテンシャル$V(r)$,ベクトルポテンシャル$\bm A$を用いて
+\begin{align}
+  \mathcal{H}=\frac{1}{2m}\left(\hat{{\bm p}}+(e{\bm A}/c)\right)^2+V({\bm r})
+\end{align}
+であった.ここで右辺第1項を展開すると
+\begin{align}
+  \frac{1}{2m}\left(\hat{{\bm p}}+(e{\bm A}/c)\right)^2=\frac{\hat{\bm p}^2}{2m}
+  +\frac{e}{2mc}{\bm A}\cdot\hat{\bm p}
+  +\frac{e}{2mc}\hat{\bm p}\cdot{\bm A}
+  +\frac{e^2|{\bm A}|^2}{2mc^2}
+\end{align}
+となる.ここでCoulombゲージ$\nabla\cdot{\bm A}=0$を用いると右辺第3項は
+\begin{align}
+  \begin{split}
+    \hat{\bm p}\cdot{\bm A}\psi&=\frac{\hbar}{i}\nabla\cdot{\bm A}\psi\\
+    &=\left(\frac{\hbar}{i}\nabla\psi\right)\cdot{\bm A}+\left(\frac{\hbar}{i}\nabla\cdot{\bm A}\right)\psi\\
+    &={\bm A}\cdot\hat{\bm p}\psi
+  \end{split}
+\end{align}
+となる.更に電磁場の二次の寄与である(2)式の右辺第4項を無視すると(2)式は
+\begin{align}
+  \frac{1}{2m}\left(\hat{{\bm p}}+(e{\bm A}/c)\right)^2=\frac{\hat{\bm p}^2}{2m}+\frac{e}{mc}{\bm A}\cdot\hat{\bm p}
+\end{align}
+となる.ここで電磁場がない場合のハミルトニアンを
+\begin{align}
+  \mathcal{H}_0=\frac{\hat{\bm p}^2}{2m}+V(r)
+\end{align}
+と置けば, (1)式は
+\begin{align}
+  \mathcal{H}=\mathcal{H}_0+\frac{e}{mc}{\bm A}\cdot\hat{\bm p}
+\end{align}
+となる.この右辺第2項が電磁場と電子の相互作用を示しておりelectron-radiation interactionハミルトニアン
+\begin{align}
+  \mathcal{H}_{\rm eR}=\frac{e}{mc}{\bm A}\cdot\hat{\bm p}
+\end{align}
+と呼ばれる.
+ここで$\bm A$を単位ベクトル$\hat{\bm e}$及び大きさ$A$を用いて
+\begin{align}
+  {\bm A}=A\hat{\bm e}
+\end{align}
+とする.ただし${\bm E}$と${\bm A}$が
+\begin{align}
+  {\bm E}=-\frac{1}{c}\frac{d{\bm A}}{dt}
+\end{align}
+を満たすべきことから$\bm E$の波数ベクトルを$\bm q$として
+\begin{align}
+  \label{equ:Aamp}
+  A=-\frac{E}{2q}\left({\rm e}^{i({\bm q}\cdot{\bm r}-\omega t)}+{\rm e}^{-i({\bm q}\cdot{\bm r}-\omega t)}\right)
+\end{align}
+である.
+これを用いて電子が価電子状態$\ket{v}$から伝導電子状態$\ket{c}$に遷移する確率を計算する.
+それぞれの状態におけるエネルギーと波数ベクトルは$E_v$, $E_c$及び${\bm k}_v$, ${\bm k}_c$である.
+ここで$\bm A$が十分小さく$\mathcal{H}_{\rm eR}$が一次の摂動として取り扱えるものとする.
+このとき遷移確率はフェルミの黄金律より
+\begin{align}
+  \label{equ:fermi_golden}
+  \frac{2\pi}{\hbar}|\bra{c}\mathcal{H}_{\rm eR}\ket{v}|^2=\frac{2\pi}{\hbar}\left(\frac{e}{mc}\right)^2|\bra{c}A\hat{\bm e}\cdot\hat{\bm p}\ket{v}|^2
+\end{align}
+ここで$\bra{c}\mathcal{H}_{\rm eR}\ket{v}$の時間積分を考える.
+(\ref{equ:Aamp})及び各状態のエネルギーが$E_v$, $E_c$であることから,時間積分に関わる項のみを抜き出すと
+\begin{align}
+  \int{\rm e}^{iE_ct/\hbar}({\rm e}^{-i\omega t}+{\rm e}^{i\omega t}){\rm e}^{iE_ct/\hbar}dt
+  \propto\delta(E_c-E_v-\hbar\omega)+\delta(E_c-E_v+\hbar\omega)
+\end{align}
+となる.ここで右辺第1項は光のエネルギーが$E_c-E_v$に等しいときに非零となることから,価電子帯から伝導電子帯への励起による吸収に対応する.
+一方で右辺第2項は逆過程である光の放出に対応する.以降では吸収過程に対応する第1項のみを陽に書き表す.
+
+価電子状態$\ket{v}$と伝導電子状態$\ket{c}$の波動関数をそれぞれ
+\begin{align}
+  \ket{v}&=u_{v,{\bm k}_v}({\bm r}){\rm e}^{i{\bm k}_v\cdot{\bm r}}\\
+  \ket{c}&=u_{c,{\bm k}_c}({\bm r}){\rm e}^{i{\bm k}_c\cdot{\bm r}}
+\end{align}
+とすれば遷移確率は
+\begin{align}
+  \begin{split}
+    |\bra{c}\mathcal{H}_{\rm eR}\ket{v}|^2
+    &=\left(\frac{e}{mc}\right)^2\left|\int u_{c,{\bm k}_c}^*{\rm e}^{-i{\bm k}_c\cdot{\bm r}}\left(-\frac{E}{2q}{\rm e}^{i({\bm q}\cdot{\bm r}-\omega t)}\right)
+    (\hat{\bm e}\cdot\hat{\bm p})u_{v,{\bm k}_v}{\rm e}^{i{\bm k}_v\cdot{\bm r}}d{\bm r}
+    \right|^2\\
+    &=\frac{E^2}{4q^2}\left(\frac{e}{mc}\right)^2\left|\int u_{c,{\bm k}_c}^*{\rm e}^{i({\bm q}-{\bm k}_c)\cdot{\bm r}}
+    (\hat{\bm e}\cdot\hat{\bm p})u_{v,{\bm k}_v}{\rm e}^{i{\bm k}_v\cdot{\bm r}}d{\bm r}
+    \right|^2
+  \end{split}
+\end{align}
+ここで
+\begin{align}
+  \hat{\bm p}u_{v,{\bm k}_v}{\rm e}^{i{\bm k}_v\cdot{\bm r}}={\rm e}^{i{\bm k}_v\cdot{\bm r}}\hat{\bm p}u_{v,{\bm k}_v}
+  +u_{v,{\bm k}_v}\hbar{\bm k}_v{\rm e}^{i{\bm k}_v\cdot{\bm r}}
+\end{align}
+となるが$u_{c,{\bm k}_c}$と$u_{v,{\bm k}_v}$が直交することから第2項は消える.したがって積分は
+\begin{align}
+  \int u_{c,{\bm k}_c}^*{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm r}}\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}
+\end{align}
+となる.ここで物質が単位格子が連続した対称性を持つとすると${\bm R}_j$を格子ベクトル, ${\bm r}'$を単位格子内での位置ベクトルとして
+${\bm r}={\bm R}_j+{\bm r}'$とできる.こうした対称性のもとで$u_{v,{\bm k}_v}$, $u_{c,{\bm k}_c}$も同様に対象であるべきなので積分は
+\begin{align}
+  \begin{split}
+    \label{equ:integral_lattice_r}
+    &\int u_{c,{\bm k}_c}^*{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm r}}\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}\\
+    &=\left(\sum_j{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm R}_j}\right)\int_{\rm u.c.} u_{c,{\bm k}_c}^*{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm r}'}\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}'
+  \end{split}
+\end{align}
+ここで単位格子が十分小さければ
+\begin{align}
+  \sum_j{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm R}_j}\rightarrow\int{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm r}}d{\bm r}\propto\delta({\bm q}-{\bm k}_c+{\bm k}_v)
+\end{align}
+となる.これは吸収過程で${\bm q}+{\bm k}_v={\bm k}_c$が満たされることを示しており,励起状態の波数ベクトルが基底状態の波数ベクトル及び電磁場の波数ベクトルに保存していることを示している.
+このことから(\ref{equ:integral_lattice_r})式の積分は
+\begin{align}
+  \int_{\rm u.c.} u_{c,{\bm k}_c}^*{\rm e}^{i({\bm q}-{\bm k}_c+{\bm k}_v)\cdot{\bm r}'}\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}'
+  =\int_{\rm u.c.} u_{c,{\bm k}_v+{\bm q}}^*\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}'
+\end{align}
+となる.更に$\bm q$が十分に小さければ$u_{c,{\bm k}_v+{\bm q}}$がテイラー展開される.
+\begin{align}
+  u_{c,{\bm k}_v+{\bm q}}=u_{c,{\bm k}_v}+{\bm q}\nabla_{\bm k}u_{c,{\bm k }_v}+\cdots
+\end{align}
+さらに$\bm q$に依存するすべての項を無視できるほど$\bm q$が小さければ積分は
+\begin{align}
+  \begin{split}
+    \int_{\rm u.c.}u_{c,{\bm k}_v+{\bm q}}^*\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}'
+    =\int_{\rm u.c.}u_{c,{\bm k}_v}^*\hat{\bm p}u_{v,{\bm k}_v}d{\bm r}'
+    =\int_{\rm u.c.}u_{c,{\bm k}}^*\hat{\bm p}u_{v,{\bm k}}d{\bm r}'
+  \end{split}
+\end{align}
+となる.以降はこの積分項を定数で置き換え
+\begin{align}
+  |P_{cv}|^2=:\int_{\rm u.c.}u_{c,{\bm k}}^*\hat{\bm p}u_{v,{\bm k}}d{\bm r}'
+\end{align}
+とする.
+以上からフェルミの黄金律((\ref{equ:fermi_golden})式)に以上の計算を代入すると
+周波数$\omega$の光の吸収による価電子状態$\ket{v}$から伝導電子状態$\ket{c}$への単位時間あたりの遷移確率$R$は
+\begin{align}
+  \begin{split}
+    R&=\frac{2\pi}{\hbar}\sum_{\bm k}|\bra{c}\mathcal{H}_{\rm eR}\ket{v}|^2\delta(E_c({\bm k})-E_v({\bm k})-\hbar\omega)\\
+    &=\frac{2\pi}{\hbar}\sum_{\bm k}\left(\frac{e}{mc}\right)^2\left|\frac{{\bm E}(\omega)}{2q}\right|^2|P_{cv}|^2\delta(E_c({\bm k})-E_v({\bm k})-\hbar\omega)\\
+    &=\frac{2\pi}{\hbar}\left(\frac{e}{m\omega}\right)^2\left|\frac{{\bm E}(\omega)}{2}\right|^2\sum_{\bm k}|P_{cv}|^2\delta(E_c({\bm k})-E_v({\bm k})-\hbar\omega)
+  \end{split}
+\end{align}
+となる.ここで$\bm k$に関する和を単位体積内でのみ行うこととすれば$R$は単位体積,単位時間内で光の吸収が起こる回数の期待値になるので,
+単位体積における単位時間あたりのエネルギー吸収量$P$は光のエネルギーが$\hbar\omega$であることから
+\begin{align}
+  \label{equ:P=Rho}
+  P=R\hbar\omega
+\end{align}
+で与えられる.
+
+また光の強度は消光係数$\alpha=2\omega\kappa/c$を用いて
+\begin{align}
+  I(\omega,x)=I_0{\rm e}^{-\alpha x}
+\end{align}
+と表されたので$x$を光の伝搬方向とし, $I$を単位体積で考えれば
+\begin{align}
+  \label{equ:dIdt}
+  -\frac{dI}{dt}&=-\frac{dI}{dx}\frac{dx}{dt}=\frac{c}{n}\alpha I
+\end{align}
+と表される.ただし複素屈折率を
+\begin{align}
+  \tilde{n}=n+i\kappa
+\end{align}
+としている.また誘電関数を
+\begin{align}
+  \varepsilon(\omega)=\varepsilon_r(\omega)+i\varepsilon_i(\omega)
+\end{align}
+とすると$\varepsilon(\omega)=\tilde{n}^2$から
+\begin{align}
+  \begin{split}
+    \varepsilon_r+i\varepsilon_i&=(n+i\kappa)^2\\
+    &=n^2-\kappa^2+2in\kappa\\
+    \therefore\ \varepsilon_i&=2n\kappa
+  \end{split}
+\end{align}
+これを用いて消光係数は
+\begin{align}
+  \alpha=2\kappa\frac{\omega}{c}=\frac{\varepsilon_i\omega}{nc}
+\end{align}
+である.さらにSI単位系において光の強度$I$は
+\begin{align}
+  I=\frac{\varepsilon_0n^2}{2}|{\bm E}(\omega)|^2
+\end{align}
+なので
+%電磁場のエネルギーは
+%\begin{align}
+%  \frac{1}{2}{\bm E}\cdot{\bm D}=\frac{\varepsilon_0n^2}{2}|{\bm E}(\omega)|^2=4\pi\varepsilon_0 I
+%\end{align}
+%と表され,したがって(\ref{equ:dIdt})式に$4\pi\varepsilon_0$をかけると単位体積,単位時間での光のエネルギーの減衰量が得られ,これは$P$に等しいはずなので
+(\ref{equ:dIdt})式より単位体積,単位時間での光のエネルギーの減衰量が得られ,これは$P$に等しいはずなので
+\begin{align}
+  \begin{split}
+    P&=-\frac{dI}{dt}\\
+    &=\frac{c}{n}\frac{\varepsilon_i\omega}{nc}\frac{\varepsilon_0n^2}{2}|{\bm E}(\omega)|^2\\
+    &=\frac{\varepsilon_0\varepsilon_i\omega}{2}|{\bm E}(\omega)|^2
+  \end{split}
+\end{align}
+これが(\ref{equ:P=Rho})と等しいことから
+\begin{align*}
+  \begin{split}
+    \frac{\varepsilon_0\varepsilon_i\omega}{2}|{\bm E}(\omega)|^2&=R\hbar\omega\\
+    &=2\pi\omega\left(\frac{e}{m\omega}\right)^2\left|\frac{{\bm E}(\omega)}{2}\right|^2
+    \sum_{\bm k}|P_{cv}|^2\delta(E_c({\bm k})-E_v({\bm k})-\hbar\omega)
+  \end{split}
+\end{align*}
+\begin{align}
+  \therefore\ 
+  \varepsilon_i=\frac{1}{4\pi\varepsilon_0}\left(\frac{2\pi e}{m\omega}\right)^2\sum_{\bm k}|P_{cv}|^2\delta(E_c({\bm k})-E_v({\bm k})-\hbar\omega)
+\end{align}
+を得る.
+ここでクラマース・クローニッヒの関係式
+\begin{align}
+  \varepsilon_r(\omega)=1+\frac{2}{\pi}\mathcal{P}\int_0^\infty\frac{\omega'\varepsilon_i(\omega')}{\omega'^2-\omega^2}d\omega'
+\end{align}
+を用いると$\hbar\omega_{cv}=E_c-E_v$を用いて
+\begin{align}
+  \begin{split}
+    \frac{2}{\pi}\mathcal{P}\int_0^\infty\frac{\omega'\varepsilon_i(\omega')}{\omega'^2-\omega^2}d\omega'
+    &=\frac{8\pi e^2}{4\pi\varepsilon_0m^2}\mathcal{P}
+    \int_0^\infty\frac{(1/\omega')\sum_{\bm k}|P_{cv}|^2\delta(E_c-E_v-\hbar\omega')}{\omega'^2-\omega^2}d\omega'\\
+    &=\frac{8\pi e^2}{4\pi\varepsilon_0m^2}\mathcal{P}
+    \int_0^\infty\frac{(1/\hbar\omega')\sum_{\bm k}|P_{cv}|^2\delta(E_c-E_v-\hbar\omega')}{(\hbar\omega')^2-(\hbar\omega)^2}\hbar^2d(\hbar\omega')\\
+    &=\frac{4\pi e^2}{4\pi\varepsilon_0m}\sum_{\bm k}\left(\frac{2}{m\hbar\omega_{cv}}\right)\frac{|P_{cv}|^2}{\omega_{cv}^2-\omega^2}
+  \end{split}
+\end{align}
+より
+\begin{align}
+  \varepsilon_r(\omega)=1+\frac{4\pi e^2}{4\pi\varepsilon_0m}\sum_{\bm k}\left(\frac{2}{m\hbar\omega_{cv}}\right)\frac{|P_{cv}|^2}{\omega_{cv}^2-\omega^2}
+\end{align}
+を得る.これは古典的に計算された誘電関数
+\begin{align}
+  \varepsilon_r(\omega)=1+\frac{4\pi e^2}{4\pi\varepsilon_0m}\sum_i\frac{N_i}{\omega_i^2-\omega^2}
+\end{align}
+と見比べると
+\begin{align}
+  f_{cv}=:\frac{2|P_{cv}|^2}{m\hbar\omega_{cv}}
+\end{align}
+が振動子の個数に対応し,振動子強度と呼ばれる.
 \bibliography{ref.bib}
 \end{document}
