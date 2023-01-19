@@ -1,0 +1,383 @@
+\documentclass[uplatex,a4j,11pt,dvipdfmx]{jsreport}
+\usepackage{listings,jvlisting}
+\bibliographystyle{junsrt}
+
+\usepackage{url}
+
+\usepackage{graphicx}
+\usepackage{gnuplot-lua-tikz}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage{titlesec}
+\usepackage{afterpage}
+
+\lstset{
+	stringstyle={\ttfamily},
+	commentstyle={\ttfamily},
+	basicstyle={\ttfamily},
+	columns=fixed,
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+	backgroundcolor=\color{white},
+  numbers=left,%行数を表示したければonにする
+  xrightmargin=0em,
+  xleftmargin=3em,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1em,
+	tabsize=2,
+  lineskip=-0.5ex
+}
+
+
+\makeatletter
+\def\fgcaption{\def\@captype{figure}\caption}
+\makeatother
+\newcommand{\setsections}[3]{
+\setcounter{section}{#1}
+\setcounter{subsection}{#2}
+\setcounter{subsubsection}{#3}
+}
+\newcommand{\mfig}[3][width=15cm]{
+\begin{center}
+\includegraphics[#1]{#2}
+\fgcaption{#3 \label{fig:#2}}
+\end{center}
+}
+\newcommand{\gnu}[2]{
+\begin{figure}[hptb]
+\begin{center}
+\input{#2}
+\caption{#1}
+\label{fig:#2}
+\end{center}
+\end{figure}
+}
+\titleformat{\chapter}[block]{\huge\bfseries}{}{0pt}{第{\thechapter}章\quad}
+\titleformat{\section}[block]{\Large\bfseries}{}{0pt}{\thesection\quad}
+\titleformat{\subsection}[block]{\large\bfseries}{}{0pt}{\thesubsection\quad}
+
+\begin{document}
+  \begin{titlepage}
+    \begin{center}
+      \vspace*{150truept}
+      
+      {\huge アドバンスドマニュファクチュアリング演習 レポート} 
+      
+      \vspace{80truept}
+      
+      {\LARGE 佐々木良輔}
+      
+      \vspace{5truept}
+      
+      {\Large 学籍番号 : 61908697}
+      
+    \end{center}
+  \end{titlepage}
+  {
+    \pagenumbering{roman}
+    \makeatletter
+    \renewcommand{\@makeschapterhead}[1]{
+      \textsf{\HUGE 目次}\par
+      \vtop to 2\baselineskip{
+      }\par}
+    \makeatother
+    \tableofcontents
+  }
+  \setcounter{page}{0}
+  \pagenumbering{arabic}
+  \chapter{設計}
+  この章では私が設計を行ったエンブレムと金型について,その概要を述べる.
+  \section{エンブレムの設計}
+  図\ref{fig:fig/em_shape.jpg}に作製したエンブレムの概形を示す.設計はDASSAULT社製 SolidWorks 2021 CADソフトウェアを用いて行った.
+  エンブレムにはモチーフとしてThinkの文字をあしらった.
+  
+  エンブレムはワイヤー放電加工機で製作されることを考慮し,
+  最小のクリアランスを$2\ \si{\milli\metre}$とした.
+  ワイヤー放電加工機で材料をくり抜く場合,のワイヤーを通すためのスタートホールを事前に開けておく必要がある.
+  スタートホールの位置を図\ref{fig:fig/em_shall.jpg}に示す.
+  図\ref{fig:fig/em_shall.jpg}のようにスタートホールを一直線上に並べたり,位置の精度を$\si{\milli\metre}$程度にしておくことで,
+  後にボール盤でスタートホールを加工する際に加工が容易になるようにしている.
+
+  加工の際にはSolidWorksから正面からの図面をdxf形式で出力,
+  ワイヤー放電加工機に読み込み,組み込まれているCAM機能を用いて加工を行った.
+  \mfig[width=8cm]{fig/em_shape.jpg}{エンブレムの概形}
+  \mfig[width=12cm]{fig/em_shall.jpg}{スタートホールの位置}
+  \section{金型の設計}
+  図\ref{fig:fig/mold_shape.jpg}に作製した金型の概形を示す.設計はSolidWorks 2021を用いた.
+  金型にはモチーフとしてGitHub社のキャラクターであるInvertocatをあしらった.\cite{octocat,octocat_legal}
+
+  金型は射出成形に用いることを考慮し,側面に抜き勾配を$5\si{\degree}$設けた.
+  また加工に$\phi 2$のラジアスエンドミルを用いることから,最小Rは$1\ \si{\milli\metre}$とし,クリアランスも$2\ \si{\milli\metre}$以上となるようにモデルを調整した.
+  また底面にはR 0.3のフィレットを設けた.
+
+  今回の設計においてはスプラインを多用したが,
+  このような複雑な形状に対してSolidWorksの抜き勾配機能を用いると図\ref{fig:fig/mold_grad_fail.jpg}のようにボディの生成に失敗した.
+  ここで押し出しツールの抜き勾配オプションを代わりに用いたところ正常に抜き勾配を設定できた.
+  \mfig[width=12cm]{fig/mold_shape.jpg}{金型の概形}
+  \mfig[width=8cm]{fig/mold_grad.jpg}{金型の抜き勾配,底面のフィレット}
+  \mfig[width=8cm]{fig/mold_clear.jpg}{金型の最小クリアランス,最小R}
+  \mfig[width=12cm]{fig/mold_grad_fail.jpg}{抜き勾配ツールを用いた時のボディ,サーフェスが大量に生成され,不整合な状態になっている}
+  \chapter{加工}
+  \section{製作物の構成}
+  図\ref{fig:fig/assem.jpg}に製作した卓上ブロワーの構成を示す.
+  卓上ブロワーは主に6個の構成部品からなる.また各部品の材質,加工機材を表\ref{tab:parts}に示す.
+  \begin{itemize}
+    \item インペラ
+    \item 外装
+    \item 支柱
+    \item ベースプレート
+    \item 装飾\begin{itemize}
+      \item エンブレム
+      \item カード
+    \end{itemize}
+  \end{itemize}
+  インペラはUSB電源で駆動するDCファンにより回転し,外装側面の吸気口から空気を吸い込み,排気口から風を送りだす.
+  外装は支柱,並びにベースプレートで保持される.ベースプレートと支柱はネジで固定され,緩めることで角度を調整できる.
+  ベースプレートにはカードとエンブレムが装飾として取り付けられている.
+  \begin{table}[h]
+    \caption{各部品の材質,加工機材}
+    \label{tab:parts}
+    \centering
+    \begin{tabular}{c|cp{70mm}}
+    \hline
+    &材質&加工機材\\
+    \hline \hline
+    インペラ&ケムウッド&DMG MORI製 NMV1500 5軸加工機\\
+    外装&アルミ&ヤマザキマザック製 INTEGREX i-100 複合加工機\\
+    支柱&アルミ&中村留精密工業製 Super NTY$^3$ 複合加工機\\
+    ベースプレート&アルミ&オークマ製 MB-4000H 横型マシニングセンタ\\
+    エンブレム&アルミ&三菱電機製 MV-2400S ワイヤ放電加工機\\
+    カード&ABS(本体), NAK80(金型)&Sodick社製 LP20EH2 射出成形機,オークマ製 MB-4000H 横型マシニングセンタ\\
+    \hline
+    \end{tabular}
+  \end{table}
+  \mfig[width=8cm]{fig/assem.jpg}{卓上ブロワーの構成}
+  \afterpage{\clearpage}
+  \section{加工データ作製}
+  金型はCADデータからCAMソフトウェアを用いてNCデータを作製し,これを用いて加工を行った.
+  CAMソフトウェアにはUEL社製 CAD meisterを用いた.
+  SOlidWorksで作製したCADデータをSTEP形式に出力し,これをCAD meisterで読み込んで作業を行った.
+  加工データの作製は以下の手順で行われる.
+  \begin{enumerate}
+    \item ツールパスの作製\begin{itemize}
+      \item 荒取りパス
+      \item 仕上げパス
+    \end{itemize}
+    \item NCデータ出力
+    \item シミュレーション\begin{itemize}
+      \item 削り残し量計算
+      \item 加工負荷計算
+    \end{itemize}
+  \end{enumerate}\clearpage
+  \subsection{ツールパスの作製}
+  今回は荒取りパスと仕上げパスの2つに分けてツールパスを作成した.
+  加工はは図\ref{fig:fig/mold_endmill.jpg}に示したラジアスエンドミルで荒取り,仕上げ共に行った.
+  荒取りパスはポケット加工を行うものであり,削り代を0.1 mm残して加工する.
+  荒取りパスを図\ref{fig:fig/toolpath.jpg}(a)に示す.
+  仕上げパスは表面の仕上げを行う加工であり,
+  図\ref{fig:fig/toolpath.jpg}(b)のように表面をなぞり荒取りパスで僅かに残した削り代を削ることで表面の状態を良くする.
+  \mfig[width=3cm]{fig/mold_endmill.jpg}{加工に用いるエンドミル}
+  \mfig[width=14cm]{fig/toolpath.jpg}{(a)荒取りパス, (b)仕上げパス}
+  \subsection{NCデータの出力}
+  NCデータとはListing \ref{src:NC}のようなMコード及びGコードからなる一連のデータである.
+  CAMソフトウェアでは前節で作成したツールパスから座標を計算しListing \ref{src:NC}の12行目以降のように,
+  テキストデータで座標が羅列される.このデータをCNC加工機に読み込ませることで,
+  CAD等で作製した複雑な形状を忠実に機械加工で再現できる.
+  \begin{lstlisting}[caption=作製した荒取り加工NCデータの冒頭20行,label=src:NC]
+    %
+    G00G91G28Z0
+    G28X0Y0
+    T01
+    M06
+    G90G00X0.Y0.
+    G43Z200.H01
+    S10000M03
+    G91G00X-.035Y.075
+    Z-183.7
+    G01Z-3.F65
+    X-.036Y-.016F1000
+    X-.011Y-.018
+    X-.009Y-.057
+    X.008Y-.026
+    X.014Y-.02
+    X.033Y-.027
+    X.036Y-.002
+    X.057Y.018
+    X.024Y.033
+  \end{lstlisting}
+  \subsection{シミュレーション}
+  CAMソフトウェアの利点として,加工前にある程度加工のシミュレーションができることが上げられる.
+  これによって加工の際の干渉や過負荷を事前に検証し,これを回避できる.
+  今回の実習ではCAD meisterの機能を用いて削り残し量のシミュレーションと加工負荷のシミュレーションを行った.
+  \subsubsection*{削り残し量のシミュレーション}
+  削り残し量のシミュレーションでは加工後に材料が所望の寸法に対してどれだけ削り残されているか,
+  あるいは削りすぎているかをシミュレートする.図\ref{fig:fig/sim_nokosi.jpg}(a), (b)に荒取り後及び仕上げ後のシミュレーション結果を示す.
+  荒取り加工後の時点では全体が紫色であり,少なくとも0.1 mm以上の削り残しがあることがわかる.
+  これは荒取りでは0.1 mmの削り代を残していることと整合する.
+  一方で仕上げ加工後では全体が緑色になっており,所望の寸法に近い形状が得られていると考えられる.
+  \mfig[width=14cm]{fig/sim_nokosi.jpg}{(a)荒取り後の削り残し量, (b)仕上げ後の削り残し量}
+  \subsubsection*{加工負荷}
+  加工負荷のシミュレーションでは加工時に発生する加工負荷をシミュレートできる.
+  図\ref{fig:fig/sim_huka.jpg}に仕上げ加工の加工負荷シミュレーション結果を示す.
+  \mfig[width=7cm]{fig/sim_huka.jpg}{仕上げ加工の加工負荷}
+  \section{加工方法}
+  この節では各部品の加工方法について述べる.
+  \subsection{インペラ}
+  インペラはDMG MORI製 NMV1500 5軸加工機を用いて加工した.
+  材料として円筒状に切断されたケムウッドを用いた.
+  加工手順を以下に示す.
+  \begin{enumerate}
+    \item 材料をテーブルにネジでクランプする
+    \item 事前に用意されたNCデータをコンソールから選択し,実行する
+    \item 干渉がないことを確認しながらオーバーライドを操作し,問題が無ければ一定のオーバーライドで加工する
+  \end{enumerate}
+
+  今回使用した機材は回転傾斜テーブル型の5軸加工機であり,各軸を同期して加工を行う同時加工を行える.
+  また5軸加工機は一般に
+  \begin{itemize}
+    \item 複数の面から加工でき,段取り回数が減る
+    \item 治具を削減できる
+    \item ボールエンドミルの周速0点を回避して加工できる
+    \item 工具の突き出し量を短くでき,精度が向上する
+  \end{itemize}
+  といった利点が存在する.\cite{5jiku}
+  \mfig[width=8cm]{fig/kaitenkeisya.png}{回転傾斜テーブル型5軸加工機\cite{5jiku}}
+  \subsection{外装}
+  外装はヤマザキマザック製 INTEGREX i-100 複合加工機を用いて加工した.
+  複合加工機は旋盤のように材料が回転するため,丸物の加工に適している.
+  INTEGREX i-100はMAZATROLというCNC装置を装備し,対話型でのプログラミングを行える.
+  
+  材料としてアルミ丸棒を用いた.
+  加工手順を以下に示す.
+  \begin{enumerate}
+    \item 材料を主軸にクランプする
+    \item 材料の長さをタッチプローブを用いて測定,ワーク座標に反映する
+    \item 加工手順書に従って,対話型コンソールを用いてプログラムを行う
+    \item 干渉がないことを確認しながらオーバーライドを操作し,問題が無ければ一定のオーバーライドで加工する
+  \end{enumerate}
+  \subsection{支柱}
+  支柱は中村留精密工業製 Super NTY$^3$ 複合加工機を用いて加工した.
+  Super NTY$^3$はINTEGREX i-100と異なりタレット型のATCを装備し,
+  高速に工具交換を行える.
+  また主軸も対向して2つ装備しており,
+  これによって両持ちでの加工,長物材料の引き出し,両端加工などが行える.
+  更にタレットは2つの主軸に対しそれぞれ1つ,更に共用の物が1つの計3つを装備し,
+  複数の刃物での同時加工によって生産性が向上する.
+
+  材料としてアルミ丸棒を用いた.加工手順を以下に示す.
+  \begin{enumerate}
+    \item 材料を主軸にクランプする.
+    \item 加工手順書に従って,プログラムを紙面で作成する
+    \item コンソールにプログラムを直接入力する
+    \item 干渉がないことを確認しながらオーバーライドを操作し,問題が無ければ一定のオーバーライドで加工する
+  \end{enumerate}
+  \mfig[width=8cm]{fig/nty3.png}{Super NTY$^3$のタレットと主軸}
+  \subsection{ベースプレート}
+  ベースプレートはオークマ製 MB-4000H 横型マシニングセンタを用いて加工した.
+  横型マシニングセンタでは図\ref{fig:fig/yokogata.png}のように,
+  主軸が水平に,また材料が垂直にクランプされており,切り屑の排出の点で有利である.
+  また材料が固定されているテーブル(パレット)を丸ごと交換するATP (automatic palet changer)が装備されており,
+  生産性が向上する.またパレットに対してイケールという治具を介して材料をクランプすると,
+  イケールの各面に材料を取り付けられるため,より多くの製品を少ない段取りで加工できる.
+  また48本のツールマガジンを持ち,BTシャンクのツールホルダを用いる.
+
+
+  材料としてアルミのブロック材を用いた.加工手順を以下に示す.
+  \begin{enumerate}
+    \item 材料は事前にクランプされていた.
+    \item ツールホルダに刃物をセットする
+    \item 事前に定めた番号のツールマガジンにツールホルダをセットする
+    \item 新たにセットした工具に関しては工具長補正を行う
+    \item 加工手順書に従って,プログラムを紙面で作成する
+    \item コンソールにプログラムを直接入力する
+    \item 干渉がないことを確認しながらオーバーライドを操作し,問題が無ければ一定のオーバーライドで加工する
+  \end{enumerate}
+  \mfig[width=8cm]{fig/yokogata.png}{横型マシニングセンタの構成\cite{yokogata:online}}
+  \subsection{エンブレム}
+  エンブレムは三菱電機製 MV-2400S ワイヤ放電加工機を用いて加工した.
+  ワイヤー放電加工機は高電圧を掛けた材料とワイヤーを接近させた際にその間で放電を起こし材料が溶融,
+  同時に発生する水蒸気爆発で金属を除去することで加工を行う装置である.
+  その特性からして導電性のある材料しか加工はできないが,
+  導電性のある材料であればどんなものであっても非常に小さな加工負荷で加工ができるため,表面状態や精度の良い加工ができる.
+  また材料はイオン交換水に沈んだ状態で加工され,このイオン交換水は電気伝導度を維持するため常に循環,濾過され続けている.
+  ワイヤー放電加工機は主に2次元形状の加工を行うが,ワイヤーの上下を別々に動かすことで部分的に3次元形状を加工することもできる.
+  今回用いたワイヤーは直径0.2 mmの黄銅線である.より精密な加工を行う場合はタングステン線などを用いる.
+
+  材料は厚さ3 mmのアルミ板を用いた.以下に加工手順を示す.
+  \begin{enumerate}
+    \item 材料をクランプする.その際にスコヤを用いて大まかにテーブル端と垂直にする.
+    \item コンソール上でdxfファイルを選択する
+    \item 組み込みCAMで加工する輪郭,および対応するスタートホール位置を選択する
+    \item 助走加工のため,少し離れた位置に加工開始点を設定する
+    \item 材料のプロファイルを選択する
+    \item NCデータを生成する
+    \item 加工を開始する
+  \end{enumerate}
+  \subsection{カード}
+  カードは金型をオークマ製 MB-4000H 横型マシニングセンタを用いて加工し,
+  Sodick 社製 LP20EH2 射出成形機を用いて射出成形した.
+  射出成形機は溶融した樹脂を金型に高圧で注入し,所望の形状を得る装置である.
+  射出成形機に材料となるプラスチックのペレットをセットすると,溶融,計量,射出成形,
+  離型などの工程を自動で行う.
+  1回の成形にかかる時間は数十秒であり,量産に適している.
+  材料にはABS樹脂を用いた.
+  MB-4000Hに関してはベースプレートの節にて述べたため割愛する.
+  \chapter{測定}
+  本実習では3次元形状測定機,ビッカース硬さ試験機,輪郭形状測定機を取り扱った.
+  \section{3次元測定機}
+  3次元測定機はサンプルの形状を3次元的に測定する装置である.
+  本実習ではmitutoyo製 CRYSTA-Apexを用いた.
+  3次元測定機はCNC制御されたタッチプローブとサンプルを置く定盤から成り,
+  図\ref{fig:fig/3dsokutei.jpg}のようにタッチプローブをサンプルに接触させることでサンプルの形状を測定する.
+  CRYSTA-Apexは1～2 μmの繰り返し精度があり,非常に精密にサンプルの形状を測定できる.\cite{crysta:online}
+
+  本実習では作製した卓上ブロワーの外装について内径の真円度や,上面の平面度を測定した.
+  \mfig[width=7cm]{fig/3dsokutei.jpg}{3次元測定機のタッチプローブとサンプル}
+  \section{ビッカース硬さ試験機}
+  ビッカース硬さとはダイヤモンドの圧子を試料に一定の力で押し込んだ際,
+  試料表面に出来たくぼみの大きさで試料の硬さを評価する手法である.
+  本実習ではmitutoyo製ビッカース硬さ試験機 HV-100を用いて,硬さ標準片の測定を体験した.
+  以下に測定手順を示す.
+  \begin{enumerate}
+    \item XYテーブルを操作し,試料上の適当な位置に移動する
+    \item 測定ボタンを押し,圧子を試料に押し付ける
+    \item マイクロスコープの映像を見ながら,試料に付いたくぼみの対角線長さを測る
+  \end{enumerate}
+  \section{形状測定機}
+  輪郭測定機はサンプルの輪郭や,表面粗さを測定する装置である.
+  本実習で用いた輪郭測定機は検出器の先端について針がサンプルの表面をなぞる際の座標から,サンプルの2次元的な輪郭を測定する.
+  得られた輪郭に対して直線などでfittingを行うことで,交差する2直線間の角度などが測定できる.
+  同一の測定装置で,検出器を交換することで表面粗さも測定できる.
+  本実習では輪郭測定機の操作を体験した.
+  \chapter{まとめ}
+  本実習では卓上ブラワーの製作を通して設計,加工,評価などの一連の流れを体験した.
+  この中でCADによる設計, CAMによるNCデータの生成, シミュレーションの方法について体験した.
+  特に設計においては実際の工具の制約や,作業の効率を意識した.
+  また5軸加工機,複合加工機,ワイヤー放電加工機,マシニングセンタなどの加工機について,
+  それぞれの仕組み,特徴や利点,欠点を学び,その操作について体験した.
+  また加工プログラムを紙面上で作成したことで,これを読み書きすることに対して多少なりとも習熟した.
+  また3次元測定機,ビッカース硬さ試験機,形状測定機などの操作を体験し,
+  それぞれの原理や硬さの定義,またこれらの測定機の応用方法について学んだ.
+  \section{感想}
+  最近ではCADを個人で用いる機会は増え,また3Dプリンターの普及により広い意味ではCAMも趣味の範囲でより身近なものになった.
+  しかし実際の製品の設計や製造に用いるCAD, CAMソフトウェアと,
+  趣味で用いるそれとではいくつかの物理的制約や自由度の存在によって未だ乖離があると感じている.
+  こういった中で実際の製品に用いるCAD, CAMソフトウェアの操作を体験できたのは,非常に興味深い体験だった.
+
+  加工や測定に関して,趣味の領域ではほぼ触れることのない機材を体験できたのは良い経験だったが,
+  授業期間に対して内容が詰め込まれ過ぎており,それぞれの機材についての理解が十分ではないと感じた.
+  また実習の際にはNCデータが事前に用意されている場合が多く,ブラックボックスに近い感覚だった.
+  以上とは別に,私は個人的に卓上CNCフライスを製作しようと画策しており,
+  実際の製品としての加工機が動作している様子を見ること,
+  またマニュファクチャリングセンターの方々と話すことは非常に有意義だった.
+
+  {
+    \titleformat{\chapter}[block]{\huge\bfseries}{}{0pt}{}
+    \bibliography{ref.bib}
+  }
+\end{document}
