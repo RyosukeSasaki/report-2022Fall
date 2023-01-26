@@ -1,0 +1,178 @@
+\documentclass[uplatex,a4j,11pt,dvipdfmx]{jsarticle}
+\usepackage{listings,jvlisting}
+\bibliographystyle{junsrt}
+
+\usepackage{url}
+
+\usepackage{graphicx}
+\usepackage{gnuplot-lua-tikz}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm}
+\usepackage{siunitx}
+
+\makeatletter
+\def\fgcaption{\def\@captype{figure}\caption}
+\makeatother
+\newcommand{\setsections}[3]{
+\setcounter{section}{#1}
+\setcounter{subsection}{#2}
+\setcounter{subsubsection}{#3}
+}
+\newcommand{\mfig}[3][width=15cm]{
+\begin{center}
+\includegraphics[#1]{#2}
+\fgcaption{#3 \label{fig:#2}}
+\end{center}
+}
+\newcommand{\gnu}[2]{
+\begin{figure}[hptb]
+\begin{center}
+\input{#2}
+\caption{#1}
+\label{fig:#2}
+\end{center}
+\end{figure}
+}
+
+\begin{document}
+\title{物性物理学3 レポート No.2}
+\author{61908697 佐々木良輔}
+\date{}
+\maketitle
+まず2原子分子における強磁性発現機構を考える.
+2つの原子$a$, $b$に電子1, 2が存在する状態の波動関数をそれぞれ
+\begin{align}
+  \psi_a(1),\ \psi_b(2)
+\end{align}
+と表したとき,
+Heitler-Londonの近似では2原子分子の波動関数を
+\begin{align}
+  \psi_+&=\frac{1}{\sqrt{2(1+C^2)}}\left(\psi_a(1)\cdot\psi_b(2)+\psi_a(2)\cdot\psi_b(1)\right)\\
+  \psi_-&=\frac{1}{\sqrt{2(1-C^2)}}\left(\psi_a(1)\cdot\psi_b(2)-\psi_a(2)\cdot\psi_b(1)\right)
+\end{align}
+とする.ここで$C$は重なり積分であり
+\begin{align}
+  C=\int\psi^*_a(1)\cdot\psi_b(1)d\tau
+  =\int\psi^*_a(2)\cdot\psi_b(2)d\tau
+  =\int\psi^*_b(1)\cdot\psi_a(1)d\tau
+  =\int\psi^*_b(2)\cdot\psi_a(2)d\tau
+\end{align}
+と定義され,原子$a$, $b$が1つの電子を共有しているほど,すなわち軌道が重なっているほど大きな値を取る.
+各状態の固有エネルギーは
+\begin{align}
+  E_+&=\frac{1}{1+C^2}(Q+J_e)\\
+  E_-&=\frac{1}{1-C^2}(Q-J_e)
+\end{align}
+である.ただし$Q$, $J_e$はそれぞれクーロン積分, 交換積分と呼ばれ
+\begin{align}
+  Q&=\int\psi_a^*(1)\psi_b^*(2)\mathcal{H}\psi_a(1)\psi_b(2)d\tau\\
+  \label{equ:Je}
+  J_e&=\int\psi_a^*(1)\psi_b^*(2)\mathcal{H}\psi_a(2)\psi_b(1)d\tau
+\end{align}
+で定義される.
+ここで$\psi_-$は電子1, 2の交換に対して反対称だが, $\psi_-$は対称であり,これは電子がフェルミ粒子であることから許されない.
+このため更に電子スピンの状態$\chi$を考慮する必要があり,全体の波動関数$\Psi$は
+\begin{align}
+  \label{equ:psiuu}
+  \Psi_{\uparrow\uparrow}&=\psi_-\chi_{\uparrow\uparrow}\\
+  \label{equ:psiud}
+  \Psi_{\uparrow\downarrow}&=\psi_+\chi_{\uparrow\downarrow}
+\end{align}
+となる.ここで
+\begin{align}
+  \chi_{\uparrow\uparrow}=\left(
+    \begin{array}{l}
+      \alpha(1)\alpha(2)\\
+      \beta(1)\beta(2)\\
+      \cfrac{1}{\sqrt{2}}(\alpha(1)\beta(2)+\alpha(2)\beta(1))
+    \end{array}
+  \right.
+\end{align}
+は電子1, 2の交換に対して対称なスピン波動関数,
+\begin{align}
+  \chi_{\uparrow\downarrow}=\cfrac{1}{\sqrt{2}}(\alpha(1)\beta(2)-\alpha(2)\beta(1))
+\end{align}
+は電子1, 2の交換に対して反対称なスピン波動関数であり(\ref{equ:psiuu}), (\ref{equ:psiud})式は全体として反対称になっていることがわかる.
+ここでハミルトニアンとして電子,原子核間のクーロン相互作用のみを考えると,
+\begin{align}
+  \label{equ:H}
+  \mathcal{H}=-\frac{Ze^2}{r_{a2}}-\frac{Ze^2}{r_{b1}}+\frac{e^2}{r_{12}}+\frac{Z^2e^2}{r_{ab}}
+\end{align}
+となる.ここで原子番号を$Z$,原子$a$, $b$間の距離を$r_{ab}$,原子$a$, 電子$2$間などの距離を$r_{a2}$などと表記した.
+これはスピン波動関数には作用しないため,固有エネルギーは$\psi_{+,-}$のみで決定し,その値は
+\begin{align}
+  E_{\uparrow\uparrow}&=E_-=\frac{1}{1-C^2}(Q-J_e)\\
+  E_{\uparrow\downarrow}&=E_+=\frac{1}{1+C^2}(Q+J_e)
+\end{align}
+また,この差は$C\ll1$のとき
+\begin{align}
+  \Delta E=E_{\uparrow\uparrow}-E_{\uparrow\downarrow}=-\frac{2J_e-2QC^2}{1-C^4}\simeq-2J_e
+\end{align}
+である.このことから$J_e$が正のとき$E_{\uparrow\uparrow}<E_{\uparrow\downarrow}$となり,強磁性が発現する.
+ここで(\ref{equ:Je})式に(\ref{equ:H})を代入すると
+\begin{align}
+  J_e=\int\psi_a^*(1)\psi_b^*(2)\left(-\frac{Ze^2}{r_{a2}}-\frac{Ze^2}{r_{b1}}+\frac{e^2}{r_{12}}+\frac{Z^2e^2}{r_{ab}}\right)\psi_a(2)\psi_b(1)d\tau
+\end{align}
+となる.したがって $\mathcal{H}$の第3, 4項を大きく,第1, 2項を小さくする,
+すなわち電子間,核子間の斥力を大きく,電子-核子間の引力を小さくすることで$J_e$を正にできる.
+このためには互いの電子軌道同士を重ねて$r_{12}$を小さくし,
+なおかつ電子軌道が原子核に接近しすぎない($r_{a2}, r_{b1}$が大きくなる)ような適当な原子間距離$R$と原子半径$d$の比が存在することが強磁性発現の条件となることがわかる.
+$R/d$に対して$J_e$をプロットしたものがベーテ・スレーター曲線(図\ref{fig:Bethe-Slater.jpg})である.図から,適当な$R/d$を持つ原子においては$J_e$が正となり,強磁性が発現しうることがわかる.
+\mfig[width=8cm]{Bethe-Slater.jpg}{ベーテ・スレーター曲線\cite{ouyoubussei}}
+
+次に多原子系での強磁性発現機構を考える.
+多原子系での強磁性発現機構として電子ガス模型が提案されている.
+$N$個の原子が位置${\bm r_i}\ (i=1,\ldots,N)$に存在しているときハミルトニアンは
+\begin{align}
+  \mathcal{H}=\sum_{i=1}^N\left(\frac{{\bm p_i}^2}{2m_i}+V({\bm r_i})\right)+\frac{1}{2}\sum_{i,j}^{i\neq j}\frac{e^2}{|{\bm r_i}-{\bm r_j}|}
+\end{align}
+である.電子ガス模型では$N$個の電子のうち1つに着目し,他の電子との相互作用をポテンシャルに取り込むことで計算を行う.
+すなわち電子$i$に関するシュレディンガー方程式は有効ポテンシャル$V_{\rm eff}$を用いて
+\begin{align}
+  \left(\frac{{\bm p_i}^2}{2m}+V_{\rm eff}(\bm r)\right)\psi_i(\bm r)=\varepsilon_i\psi_i(\bm r)
+\end{align}
+この元で電子の運動エネルギーと交換エネルギーはそれぞれ
+\begin{align}
+  E_{\rm kin}&=\Omega\frac{\hbar^2}{2m}\frac{6}{5}\pi\left(\frac{9\pi}{2}\right)^{1/3}\left(n_\uparrow^{5/3}+n_\downarrow^{5/3}\right)\\
+  E_{\rm ex}&=\Omega\frac{e^2}{4\pi\varepsilon_0}\frac{9}{4}\left(\frac{9\pi}{2}\right)^{-1/3}\left(n_\uparrow^{4/3}+n_\downarrow^{4/3}\right)
+\end{align}
+となり,それぞれ図\ref{fig:EkinEex.png}のように振る舞う.ここで$n_\sigma$はスピン$\sigma$の電子密度, $p=n_\uparrow-n_\downarrow/n_\uparrow+n_\downarrow$はスピン分極率, $n_\uparrow/n$はスピン偏極率である.
+図\ref{fig:EkinEex.png}の通り,スピン偏極率が増加すると運動エネルギーは増大するのに対して交換エネルギーは減少しており,
+これらが競合して全体としてのエネルギーが小さくなるときに強磁性が発現する.
+\mfig[width=12cm]{EkinEex.png}{$E_{\rm kin}$と$E_{\rm ex}$(授業スライドから引用)}
+
+電子ガス模型によって交換エネルギーと運動エネルギーの競合が起きることは,直感的には交換正孔を用いて説明される.
+まず近接する原子が同種スピンを持つ場合を考える.
+着目する電子と同種スピンを持った電子ガスはパウリの排他率により着目する電子の周辺から除かれる.
+すると電子ガスによる原子核の遮蔽効果が薄れ,電子の周囲には相対的に正の電荷が分布した交換正孔が生じる.
+この交換正孔とのクーロン引力によって電子は安定化する.同時に電子が局在化することで不確定性原理
+\begin{align}
+  \Delta {\bm x}\cdot\Delta {\bm p}\geq\frac{\hbar}{2}
+\end{align}
+から運動エネルギーが増大する.
+一方で近接する電子が異種スピンを持つ場合,
+着目する電子の周りにも電子ガスが存在できるため,静電遮蔽により電子はクーロン引力による安定化を受けられなくなるが,
+同時に非局在化したことで運動エネルギーが低下する.
+以上が電子ガス模型の直感的な説明である.
+
+具体的に1電子あたりのエネルギーを$\varepsilon(p)=(E_{\rm kin}+E_{\rm ex})/(n_\uparrow+n_\downarrow)$として,非磁性状態($p=0$)のと強磁性状態でのエネルギー差を計算すると
+\begin{align}
+  \Delta\varepsilon(p)=\varepsilon(p)-\varepsilon(0)=p^2\left(\frac{1.228}{r_s^2}-\frac{0.203}{r_s}\right)
+\end{align}
+となり強磁性が発現する条件は
+\begin{align}
+  \begin{split}
+    \Delta\varepsilon(p)<0\\
+    \therefore\ 6<r_s
+  \end{split}
+\end{align}
+となる.しかし通常の金属の電子濃度では$2<r_s<5$程度であり,現実の強磁性発現を説明できない.
+
+これを改善するために提案された模型が強結合模型と単一軌道ハバード模型である.
+これらのモデルでは,電子が軌道に束縛されているものとして,隣接する軌道の間を飛び移りによって移動するものとする.
+このとき運動エネルギーの増大は軌道の重なりなどを通して結晶構造に依存するようになり,電子ガス模型に比べて運動エネルギーを増大しにくくできる.
+これによって運動エネルギーと交換エネルギーの競合が,交換エネルギーにとって有利になり,通常の金属に近い条件での強磁性発現を説明できるようになる.
+\bibliography{ref.bib}
+\end{document}
