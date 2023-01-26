@@ -1,0 +1,291 @@
+\documentclass[uplatex,a4j,11pt,dvipdfmx]{jsarticle}
+\usepackage{listings,jvlisting}
+\bibliographystyle{junsrt}
+
+\usepackage{url}
+
+\usepackage{graphicx}
+\usepackage{gnuplot-lua-tikz}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm}
+\usepackage{siunitx}
+
+\makeatletter
+\def\fgcaption{\def\@captype{figure}\caption}
+\makeatother
+\newcommand{\setsections}[3]{
+\setcounter{section}{#1}
+\setcounter{subsection}{#2}
+\setcounter{subsubsection}{#3}
+}
+\newcommand{\mfig}[3][width=15cm]{
+\begin{center}
+\includegraphics[#1]{#2}
+\fgcaption{#3 \label{fig:#2}}
+\end{center}
+}
+\newcommand{\gnu}[2]{
+\begin{figure}[hptb]
+\begin{center}
+\input{#2}
+\caption{#1}
+\label{fig:#2}
+\end{center}
+\end{figure}
+}
+
+\begin{document}
+\title{物性物理学3 レポート No.3}
+\author{佐々木良輔}
+\date{}
+\maketitle
+\section*{問1}
+磁場侵入長$\lambda_L$は
+\begin{align}
+  \lambda_L=\sqrt{\frac{m^*c^2}{4\pi n_se^2}}
+\end{align}
+である.ここで伝導電子数密度はSnの価数が4, 原子量118.7 密度$7.31\ \si{\gram.\centi\metre^{-3}}$なのでアボガドロ数$N_A$を用いて
+\begin{align}
+  n_s=4\times N_a\times\frac{7.31}{118.7}=1.483\times10^{23}\ \si{\centi\metre^{-3}}
+\end{align}
+またcgs単位系での電気素量$e_{\rm cgs}$はSI単位系での電気素量$e_{\rm SI}$を用いて
+\begin{align}
+  e_{\rm cgs}=\frac{e_{\rm SI}}{\sqrt{4\pi\varepsilon_0\times10^{-9}}}=4.803\times10^{-10}\ \si{statC}
+\end{align}
+なので
+\begin{align}
+  \begin{split}
+    \lambda_L&=\sqrt{\frac{1.9\times(9.109\times10^{-28})\times(2.997\times10^{10})^2}{4\pi\times(1.483\times10^{23})\times(4.803\times10^{-10})^2}}\\
+    &=1.902\times10^{-6}\ \si{\centi\metre}=190.2\ {\rm\AA}
+  \end{split}
+\end{align}
+\section*{問2}
+体積,物質量一定のもとでヘルムホルツの自由エネルギーを全微分すると
+\begin{align}
+  dF=dU-SdT-TdS
+\end{align}
+また体積一定では$dU=TdS$なので
+\begin{align}
+  \frac{\partial F}{\partial T}=-S
+\end{align}
+ここで比熱$C=T(\partial S/\partial T)$より
+\begin{align}
+  C=-T\left(\frac{\partial^2 F}{\partial T^2}\right)
+\end{align}
+ここで常伝導状態と超伝導状態の自由エネルギーの差は
+\begin{align}
+  \Delta F=F_S-F_N=-\frac{1}{8\pi}H_C^2
+\end{align}
+だったので,常伝導と超伝導での比熱の差は
+\begin{align}
+  \begin{split}
+    \Delta C(T)&=-T\left(\frac{\partial^2\Delta F}{\partial T^2}\right)\\
+    &=\frac{T}{8\pi}\frac{\partial^2 (H_C^2)}{\partial T^2}
+  \end{split}
+\end{align}
+とくに$T=T_C$のとき$H_C=0$なので
+\begin{align}
+  \begin{split}
+    \Delta C(T_C)&=\frac{T_C}{4\pi}\left(\left(\frac{\partial H_C}{\partial T}\right)^2+H_C\frac{\partial^2H_C}{\partial T^2}\right)\\
+    &=\frac{T_C}{4\pi}\left(\frac{\partial H_C}{\partial T}\right)^2
+  \end{split}
+\end{align}
+ここでGintzburg-Landau理論のもとでは
+\begin{align}
+  H_C=\sqrt{\frac{4\pi\alpha_0^2}{\beta}}(T-T_C)
+\end{align}
+だったので
+\begin{align}
+  \begin{split}
+    \Delta C(T_C)&=\frac{T_C}{4\pi}\left(\frac{\partial}{\partial T}\left(\sqrt{\frac{4\pi\alpha_0^2}{\beta}}(T-T_C)\right)\right)^2\\
+    &=\frac{T_C\alpha_0^2}{\beta}
+  \end{split}
+\end{align}
+となる.
+\section*{問3}
+磁場に関する方程式
+\begin{align}
+  \Delta {\bm B}=\frac{\bm B}{\lambda_L^2}
+\end{align}
+の一般解は定数$\bm a$, $\bm b$を用いて
+\begin{align}
+  {\bm B}(x)={\bm a}{\rm e}^{x/\lambda_L}+{\bm b}{\rm e}^{-x/\lambda_L}
+\end{align}
+である.
+ただし$y$-$z$平面で一様なことから$x$のみの依存性を考える.
+ここで境界条件から
+\begin{align}
+  {\bm B}(\delta/2)&={\bm a}{\rm e}^{\delta/2\lambda_L}+{\bm b}{\rm e}^{-\delta/2\lambda_L}=B_a{\bm e}_z\\
+  {\bm B}(-\delta/2)&={\bm a}{\rm e}^{-\delta/2\lambda_L}+{\bm b}{\rm e}^{\delta/2\lambda_L}=B_a{\bm e}_z
+\end{align}
+${\bm a}$と${\bm b}$について対称なので${\bm a}={\bm b}$とする.
+(15)式から
+\begin{align}
+  \begin{split}
+    {\bm a}({\rm e}^{\delta/2\lambda_L}+{\rm e}^{-\delta/2\lambda_L})=B_a{\bm e}_z\\
+    \therefore\ {\bm a}=\frac{B_a}{{\rm e}^{\delta/2\lambda_L}+{\rm e}^{-\delta/2\lambda_L}}{\bm e}_z
+  \end{split}
+\end{align}
+したがって
+\begin{align}
+  \begin{split}
+    {\bm B}(x)&=B_a\frac{{\rm e}^{x/\lambda_L}+{\rm e}^{-x/\lambda_L}}{{\rm e}^{\delta/2\lambda_L}+{\rm e}^{-\delta/2\lambda_L}}{\bm e}_z\\
+    &=B_a\frac{\cosh(x/\lambda_L)}{\cosh(\delta/2\lambda_L)}{\bm e}_z
+  \end{split}
+\end{align}
+$\lambda_L=\delta$のとき$B_z$は図\ref{fig:Bz.jpg}のような$x$依存性を示す.
+またMaxwell方程式$\nabla\times{\bm B}=4\pi{\bm j}_s/c$より
+\begin{align}
+  \begin{split}
+    {\bm j}_s&=\frac{c}{4\pi}\nabla\times\left(\begin{matrix}
+      0\\0\\B_a\frac{\cosh(x/\lambda_L)}{\cosh(\delta/2\lambda_L)}
+    \end{matrix}\right)\\
+    &=-\frac{c}{4\pi}\frac{B_a}{\lambda_L}\frac{\sinh(x/\lambda_L)}{\cosh(\delta/2\lambda_L)}{\bm e}_y
+  \end{split}
+\end{align}
+となる.
+$j_{s,y}$の$x$依存性は図\ref{fig:js.jpg}のようになる.
+\mfig[width=8cm]{Bz.jpg}{$B_z$の$x$依存性}
+\mfig[width=8cm]{js.jpg}{$j_{s,y}$の$x$依存性}
+\section*{問4}
+球の半径を$a$とする.
+球の反磁場係数は対称性から
+\begin{align}
+  N_x=N_y=N_z=\frac{1}{3}
+\end{align}
+である.いま球が一様に磁化$\bm M$を持つとき,これによる反磁場${\bm H}_d$は
+\begin{align}
+  {\bm H}_d=-\frac{4\pi}{3}{\bm M}
+\end{align}
+また物質内部の磁束密度${\bm B}_i$は,内部での磁場${\bm H}_i$を用いて
+\begin{align}
+  {\bm B}_i={\bm H}_i+4\pi{\bm M}
+\end{align}
+であるが,超伝導体内部の磁束密度は0なので
+\begin{align}
+  {\bm H}_i=-4\pi{\bm M}
+\end{align}
+さらに外部磁場を$H_{\rm ex}$とすると
+\begin{align}
+  {\bm H}_i={\bm H}_{\rm ex}-{\bm H}_d
+\end{align}
+より
+\begin{align}
+  \begin{split}
+    {\bm H}_{\rm ex}&={\bm H}_i+{\bm H}_d\\
+    &=-\frac{8\pi}{3}{\bm M}={\bm B}
+  \end{split}
+\end{align}
+が成り立つ.
+
+次に球座標でのMaxwell方程式を考える. $\phi$方向について対称なため${\bm B}=(B_r,B_\theta,0)$とすると
+\begin{align}
+  \nabla\cdot{\bm B}=\frac{1}{r^2}\frac{\partial}{\partial r}(r^2B_r)+\frac{1}{r\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta B_\theta)=0\\
+  \nabla\times{\bm B}=
+  \left(
+  \begin{matrix}
+    0\\0\\
+    \frac{1}{r}\left(\frac{\partial}{\partial r}(rB_\theta)-\frac{\partial B_r}{\partial\theta}\right)
+  \end{matrix}
+  \right)={\bm 0}
+\end{align}
+(27)式から
+\begin{align}
+  \frac{\partial}{\partial r}(rB_\theta)=\frac{\partial B_r}{\partial\theta}
+\end{align}
+また(26)式を両辺$r^2$をかけ, $r$で微分すると
+\begin{align}
+  \frac{\partial^2}{\partial r^2}(r^2B_r)+\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta\frac{\partial}{\partial r}(rB_\theta))=0
+\end{align}
+(28)および(29)から
+\begin{align}
+  \frac{\partial^2}{\partial r^2}(r^2B_r)+\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta\frac{\partial B_r}{\partial \theta})=0
+\end{align}
+変数分離型の解$B_r=R(r)\Theta(\theta)$を仮定し,両辺$B_r$で除すると
+\begin{align}
+  \frac{1}{R}\frac{\partial^2}{\partial r^2}(r^2R)+\frac{1}{\Theta\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta\frac{\partial\Theta}{\partial\theta})=0
+\end{align}
+ここで第1項,第2項はそれぞれ$r$, $\theta$のみに依存するため定数$\lambda$を用いて
+\begin{align}
+  \frac{1}{\Theta\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta\frac{\partial\Theta}{\partial\theta})=\lambda
+\end{align}
+とできる.両辺に$\Theta\sin\theta$をかけ,計算を進めると
+\begin{align}
+  \begin{split}
+    \frac{\partial}{\partial\theta}(\sin\theta\frac{\partial\Theta}{\partial\theta})&=\lambda\Theta\sin\theta\\
+    \cos\theta\frac{\partial\Theta}{\partial\theta}+\sin\theta\frac{\partial^2\Theta}{\partial\theta}&=\lambda\Theta\sin\theta
+  \end{split}
+\end{align}
+ここで$\Theta$は解として$\Theta=A\cos\theta$ (Aは定数)を持つ.これを代入すると
+\begin{align}
+  -A\sin\theta\cos\theta-A\sin\theta\cos\theta=\lambda A\sin\theta\cos\theta
+\end{align}
+となり, $\lambda=-2$となる.したがって$r$について
+\begin{align}
+  \begin{split}
+    \frac{1}{R}\frac{\partial^2}{\partial r^2}(r^2R)=-\lambda\\
+    2R+4r\frac{\partial R}{\partial r}+r^2\frac{\partial^2R}{\partial r^2}=-\lambda R
+  \end{split}
+\end{align}
+ここで$R$は解として$R=r^l$を持つ.これを代入すると
+\begin{align}
+  \begin{split}
+    2r^l+4lr^l+l(l-1)r^l&=-\lambda r^l\\
+    l^2+3l+2+\lambda&=0\\
+  \end{split}
+\end{align}
+$\lambda=-2$より
+\begin{align}
+  l=0,-3
+\end{align}
+以上から定数$A_0$, $A_3$を用いて$B_r$の一般解は
+\begin{align}
+  B_r=A_0\cos\theta+A_3\frac{\cos\theta}{r^3}
+\end{align}
+ここで境界条件として試料の内部に磁束が入り込まないことを課す,すなわち
+\begin{align}
+  B_r|_{r=a}=0
+\end{align}
+また試料から十分に離れたとき磁束は外部磁場に一致することを課す,
+すなわち外部磁場を$H_{\rm ex}{\bm e}_z$に対して
+\begin{align}
+  &B_r\rightarrow H_{\rm ex}\cos\theta\\
+  &B_\theta\rightarrow-H_{\rm ex}\sin\theta
+\end{align}
+となる.これを用いると(38)式は
+\begin{align}
+  B_r=H_{\rm ex}\cos\theta-H_{\rm ex}\frac{a^3}{r^3}\cos\theta
+\end{align}
+となる.次に$B_\theta$について(28)式から
+\begin{align}
+  \frac{\partial}{\partial r}(rB_\theta)=\frac{\partial B_r}{\partial\theta}=-H_{\rm ex}\sin\theta+H_{\rm ex}\frac{a^3}{r^3}\sin\theta
+\end{align}
+であり,これを満たすのは
+\begin{align}
+  B_\theta=-H_{\rm ex}\sin\theta-\frac{1}{2}H_{\rm ex}\frac{a^3}{r^3}\sin\theta
+\end{align}
+である.以上をまとめると
+\begin{align}
+  {\bm B}=\left(
+    \begin{matrix}
+      H_{\rm ex}\cos\theta-H_{\rm ex}\frac{a^3}{r^3}\cos\theta\\
+      -H_{\rm ex}\sin\theta-\frac{1}{2}H_{\rm ex}\frac{a^3}{r^3}\sin\theta\\
+      0
+    \end{matrix}
+  \right)
+\end{align}
+である.球面の赤道上では$\theta=\pi/2$なので
+\begin{align}
+  {\bm B}|_{\theta=\pi/2,r=a}=\left(
+    \begin{matrix}
+      0\\
+      -\frac{3}{2}H_{\rm ex}\\
+      0
+    \end{matrix}
+  \right)
+\end{align}
+となる.
+\bibliography{ref.bib}
+\end{document}
